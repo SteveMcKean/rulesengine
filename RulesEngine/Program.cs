@@ -7,12 +7,10 @@ using RulesEngine.VariantStates;
 
 var variant = new CpiSkuDimensionVariant
     {
-        Length = 500,
-        Width = 500,
-        Height = 500,
-        Weight = 6000,
-        AspectRatio = 0.3m,
-        DiagonalRatio = 2.2m
+        Length = 609,
+        Width = 609,
+        Height = 406,
+        Weight = 6000
     };
 
 var heightSpecification = new ValidHeightSpecification();
@@ -63,11 +61,9 @@ else if(tippingSpecification.GetType().Name == "RecommendedTippingSpecification"
 variant = new CpiSkuDimensionVariant
     {
         Length = 500,
-        Width = 500,
+        Width = 400,
         Height = 500,
-        Weight = 6000,
-        AspectRatio = 1.3m,
-        DiagonalRatio = 2.2m
+        Weight = 6000
     };
 
 tippingSpecification = Specification<CpiSkuDimensionVariant>.GetFirstSatisfiedBy(variant, specifications);

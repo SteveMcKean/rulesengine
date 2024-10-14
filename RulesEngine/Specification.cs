@@ -12,7 +12,7 @@ public abstract class Specification<T>
     
     public static Specification<T>? GetFirstSatisfiedBy(T entity, IEnumerable<Specification<T>> specifications)
     {
-        return Enumerable.ToList(specifications)
+        return specifications.ToList()
             .FirstOrDefault(specification => specification.IsSatisfiedBy(entity));
     }
     

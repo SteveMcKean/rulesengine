@@ -6,6 +6,7 @@ public class ValidWeightSpecification : Specification<CpiSkuDimensionVariant>
 {
     public override Expression<Func<CpiSkuDimensionVariant, bool>> ToExpression()
     {
-        return variant => variant.Weight <= CpiSkuDimensionVariant.MaxWeight;
+        return variant => variant.Weight >= CpiSkuDimensionVariant.MinWeight && 
+                          variant.Weight <= CpiSkuDimensionVariant.MaxWeight;
     }
 }

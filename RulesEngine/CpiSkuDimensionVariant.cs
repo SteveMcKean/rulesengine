@@ -42,6 +42,8 @@ public class CpiSkuDimensionVariant
     
     public List<CpiSkuDimensionVariant> ChildVariants { get; set; } = new List<CpiSkuDimensionVariant>();
     public bool IsTippable { get; set; }
+    public bool IsDimensionsOutOfBounds { get; set; }
+    public string DimensionOutOfBoundsReason { get; set; }
 
     public CpiSkuDimensionVariant()
     {

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace RulesEngine;
+namespace RulesEngine.TippingSpecifications;
 
 public class ForcedTippingSpecification : Specification<CpiSkuDimensionVariant>
 {

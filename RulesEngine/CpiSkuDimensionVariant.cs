@@ -1,4 +1,5 @@
-﻿using RulesEngine.VariantStates;
+﻿using System.Data;
+using RulesEngine.VariantStates;
 
 namespace RulesEngine;
 
@@ -37,7 +38,7 @@ public class CpiSkuDimensionVariant
     
     public decimal AspectRatio => Length != 0 ? Math.Round((decimal)Width / Length, 2) : 0;
 
-    public decimal DiagonalRatio { get; set; }
+   public decimal DiagonalRatio => Length >= 0 && Width >= 0 ? Math.Round((decimal)Math.Sqrt(Length * Length + Width * Width),2) : 0;
     
     public List<CpiSkuDimensionVariant> ChildVariants { get; set; } = new List<CpiSkuDimensionVariant>();
     public bool IsTippable { get; set; }

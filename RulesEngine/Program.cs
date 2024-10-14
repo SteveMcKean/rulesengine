@@ -5,35 +5,47 @@ using System.Runtime.CompilerServices;
 using RulesEngine;
 using RulesEngine.VariantStates;
 
+Console.ForegroundColor = ConsoleColor.Red;
 var variant = new CpiSkuDimensionVariant
     {
-        Length = 609,
-        Width = 609,
-        Height = 406,
-        Weight = 6000
+        Length = GetDoubleFromUser("Enter Length: "),
+        Width = GetDoubleFromUser("Enter Width: "),
+        Height = GetDoubleFromUser("Enter Height: "),
+        Weight = GetDoubleFromUser("Enter Weight: ")
     };
 
+Console.ForegroundColor = ConsoleColor.Green;
 var heightSpecification = new ValidHeightSpecification();
+var heightResult = heightSpecification.IsSatisfiedBy(variant);
+Console.WriteLine($"Height specification satisfied: {heightResult}");
+
 var widthSpecification = new ValidWidthSpecification();
+var widthResult = widthSpecification.IsSatisfiedBy(variant);
+Console.WriteLine($"Width specification satisfied: {widthResult}");
+
 var lengthSpecification = new ValidLengthSpecification();
+var lengthResult = lengthSpecification.IsSatisfiedBy(variant);
+Console.WriteLine($"Length specification satisfied: {lengthResult}");
+
 var weightSpecification = new ValidWeightSpecification();
+var weightResult = weightSpecification.IsSatisfiedBy(variant);
+Console.WriteLine($"Weight specification satisfied: {weightResult}");
 
-var heightWidthSpecification = new AndSpecification<CpiSkuDimensionVariant>(heightSpecification, widthSpecification);
-var lengthWeightSpecification = new AndSpecification<CpiSkuDimensionVariant>(lengthSpecification, weightSpecification);
-
-var dimensionSpecification = new AndSpecification<CpiSkuDimensionVariant>(heightWidthSpecification, lengthWeightSpecification);
 var aspectRatioSpecification = new ValidAspectRatioSpecification();
+var aspectRatioResult = aspectRatioSpecification.IsSatisfiedBy(variant);
+Console.WriteLine($"Aspect Ratio specification satisfied: {aspectRatioResult}");
+
 var diagonalRatioSpecification = new ValidDiagonalRatioSpecification();
+var diagonalRatioResult = diagonalRatioSpecification.IsSatisfiedBy(variant);
+Console.WriteLine($"Diagonal Ratio specification satisfied: {diagonalRatioResult}");
 
-var aspectsSpecification = new AndSpecification<CpiSkuDimensionVariant>(dimensionSpecification, aspectRatioSpecification);
+Console.WriteLine($"Variant dimensions: {variant.AspectRatio} Aspect Ratio, {variant.DiagonalRatio} Diagonal Ratio");
 
-dimensionSpecification = new AndSpecification<CpiSkuDimensionVariant>(aspectsSpecification, diagonalRatioSpecification);
-var result = dimensionSpecification.IsSatisfiedBy(variant);
+// Reset color
+Console.ResetColor();
 
-Console.WriteLine(result);
-
+// Retrieve and apply the first satisfied tipping specification
 var specificationType = typeof(Specification<CpiSkuDimensionVariant>);
-
 var specifications = Assembly.GetExecutingAssembly().GetTypes()
     .Where(t => t.BaseType == specificationType)
     .Select(t => Activator.CreateInstance(t) as Specification<CpiSkuDimensionVariant>)
@@ -41,53 +53,31 @@ var specifications = Assembly.GetExecutingAssembly().GetTypes()
 
 var tippingSpecification = Specification<CpiSkuDimensionVariant>.GetFirstSatisfiedBy(variant, specifications);
 
-if(tippingSpecification.GetType().Name == "NotAllowedTippingSpecification")
+if (tippingSpecification != null)
 {
-    Console.WriteLine("Not allowed");
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine($"Tipping Specification satisfied: {tippingSpecification.Name}");
 }
-else if(tippingSpecification.GetType().Name == "ForcedTippingSpecification")
+else
 {
-    Console.WriteLine("Forced");
-}
-else if(tippingSpecification.GetType().Name == "AllowedNotRecommendedTippingSpecification")
-{
-    Console.WriteLine("Allowed not recommended");
-}
-else if(tippingSpecification.GetType().Name == "RecommendedTippingSpecification")
-{
-    Console.WriteLine("Recommended");
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine("No tipping specification satisfied.");
 }
 
-variant = new CpiSkuDimensionVariant
+// Reset color
+Console.ResetColor();
+// Reset color and wait for user input
+Console.ResetColor();
+
+static int GetDoubleFromUser(string prompt)
+{
+    int value;
+    do
     {
-        Length = 500,
-        Width = 400,
-        Height = 500,
-        Weight = 6000
-    };
+        Console.Write(prompt);
+    } while (!int.TryParse(Console.ReadLine(), out value));
 
-tippingSpecification = Specification<CpiSkuDimensionVariant>.GetFirstSatisfiedBy(variant, specifications);
-
-if(tippingSpecification.GetType().Name == "NotAllowedTippingSpecification")
-{
-    Console.WriteLine("Not allowed");
-}
-else if(tippingSpecification.GetType().Name == "ForcedTippingSpecification")
-{
-    Console.WriteLine("Forced");
-}
-else if(tippingSpecification.GetType().Name == "AllowedNotRecommendedTippingSpecification")
-{
-    Console.WriteLine("Allowed not recommended");
-}
-else if(tippingSpecification.GetType().Name == "RecommendedTippingSpecification")
-{
-    Console.WriteLine("Recommended");
-}
-
-if(variant.StateManager.CanTransitionTo<AllowedNotRecommendedTippingVariantState>())
-{
-    variant.StateManager.TransitionTo(new AllowedNotRecommendedTippingVariantState());
+    return value;
 }
 
 Console.ReadLine();

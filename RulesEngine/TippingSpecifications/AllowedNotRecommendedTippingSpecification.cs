@@ -6,7 +6,7 @@ public class AllowedNotRecommendedTippingSpecification : Specification<CpiSkuDim
 {
     public override Expression<Func<CpiSkuDimensionVariant, bool>> ToExpression()
     {
-        return variant => variant.AspectRatio > CpiSkuDimensionVariant.MinAspectRatio && 
+        return variant => variant.AspectRatio > CpiSkuDimensionVariant.MinAspectRatio &&
                           variant.AspectRatio <= CpiSkuDimensionVariant.MaxAspectRatio;
     }
 }

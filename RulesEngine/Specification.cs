@@ -4,6 +4,8 @@ namespace RulesEngine;
 
 public abstract class Specification<T>
 {
+    public string Name => GetType().Name;
+    
     public bool IsSatisfiedBy(T entity)
     {
         var predicate = ToExpression().Compile();

@@ -8,4 +8,9 @@ public class ValidAspectRatioSpecification : Specification<CpiSkuDimensionVarian
     {
         return variant => variant.AspectRatio <= CpiSkuDimensionVariant.MaxAspectRatio;
     }
+    
+    public override string GetFailureMessage(CpiSkuDimensionVariant variant)
+    {
+        return $"Aspect ratio {variant.AspectRatio} exceeds the maximum allowed aspect ratio of {CpiSkuDimensionVariant.MaxAspectRatio}.";
+    }
 }

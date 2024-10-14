@@ -9,4 +9,9 @@ public class ValidWidthSpecification : Specification<CpiSkuDimensionVariant>
         return variant => variant.Width >= CpiSkuDimensionVariant.MinWidth && 
                           variant.Width <= CpiSkuDimensionVariant.MaxWidth;
     }
+
+    public override string GetFailureMessage(CpiSkuDimensionVariant entity)
+    {
+        return $"Width {entity.Width} is not within the valid range of {CpiSkuDimensionVariant.MinWidth} to {CpiSkuDimensionVariant.MaxWidth}";
+    }
 }

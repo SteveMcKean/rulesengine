@@ -17,27 +17,27 @@ var variant = new CpiSkuDimensionVariant
 Console.ForegroundColor = ConsoleColor.Green;
 var heightSpecification = new ValidHeightSpecification();
 var heightResult = heightSpecification.IsSatisfiedBy(variant);
-Console.WriteLine($"Height specification satisfied: {heightResult}");
+Console.WriteLine($"Height specification satisfied: {heightResult.IsSatisfied} {heightResult.Message}");
 
 var widthSpecification = new ValidWidthSpecification();
 var widthResult = widthSpecification.IsSatisfiedBy(variant);
-Console.WriteLine($"Width specification satisfied: {widthResult}");
+Console.WriteLine($"Width specification satisfied: {widthResult.IsSatisfied} {widthResult.Message}");
 
 var lengthSpecification = new ValidLengthSpecification();
 var lengthResult = lengthSpecification.IsSatisfiedBy(variant);
-Console.WriteLine($"Length specification satisfied: {lengthResult}");
+Console.WriteLine($"Length specification satisfied: {lengthResult.IsSatisfied}  {lengthResult.Message}");
 
 var weightSpecification = new ValidWeightSpecification();
 var weightResult = weightSpecification.IsSatisfiedBy(variant);
-Console.WriteLine($"Weight specification satisfied: {weightResult}");
+Console.WriteLine($"Weight specification satisfied: {weightResult.IsSatisfied} {weightResult.Message}");
 
 var aspectRatioSpecification = new ValidAspectRatioSpecification();
 var aspectRatioResult = aspectRatioSpecification.IsSatisfiedBy(variant);
-Console.WriteLine($"Aspect Ratio specification satisfied: {aspectRatioResult}");
+Console.WriteLine($"Aspect Ratio specification satisfied: {aspectRatioResult.IsSatisfied} {aspectRatioResult.Message}");
 
 var diagonalRatioSpecification = new ValidDiagonalRatioSpecification();
 var diagonalRatioResult = diagonalRatioSpecification.IsSatisfiedBy(variant);
-Console.WriteLine($"Diagonal Ratio specification satisfied: {diagonalRatioResult}");
+Console.WriteLine($"Diagonal Ratio specification satisfied: {diagonalRatioResult.IsSatisfied} {diagonalRatioResult}");
 
 Console.WriteLine($"Variant dimensions: {variant.AspectRatio} Aspect Ratio, {variant.DiagonalRatio} Diagonal Ratio");
 
@@ -47,9 +47,10 @@ Console.ResetColor();
 // Retrieve and apply the first satisfied tipping specification
 var specificationType = typeof(Specification<CpiSkuDimensionVariant>);
 var specifications = Assembly.GetExecutingAssembly().GetTypes()
-    .Where(t => t.BaseType == specificationType)
+    .Where(t => t.BaseType == specificationType && t.Name.Contains("TippingSpecification"))
     .Select(t => Activator.CreateInstance(t) as Specification<CpiSkuDimensionVariant>)
     .ToArray();
+
 
 var tippingSpecification = Specification<CpiSkuDimensionVariant>.GetFirstSatisfiedBy(variant, specifications);
 

@@ -6,17 +6,25 @@ public abstract class Specification<T>
 {
     public string Name => GetType().Name;
     
-    public bool IsSatisfiedBy(T entity)
+    public SpecificationResult IsSatisfiedBy(T entity)
     {
         var predicate = ToExpression().Compile();
-        return predicate(entity);
+        var isSatisfied = predicate(entity);
+
+        return isSatisfied ? new SpecificationResult(true) : 
+            new SpecificationResult(false, GetFailureMessage(entity));
     }
     
     public static Specification<T>? GetFirstSatisfiedBy(T entity, IEnumerable<Specification<T>> specifications)
     {
         return specifications.ToList()
-            .FirstOrDefault(specification => specification.IsSatisfiedBy(entity));
+            .FirstOrDefault(specification => specification.IsSatisfiedBy(entity).IsSatisfied);
     }
     
     public abstract Expression<Func<T, bool>> ToExpression();
+    
+    public virtual string GetFailureMessage(T entity)
+    {
+        return $"{Name} was not satisfied.";
+    }
 }

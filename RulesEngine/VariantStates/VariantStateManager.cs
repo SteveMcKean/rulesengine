@@ -2,7 +2,7 @@
 
 public class VariantStateManager
 {
-    private CpiSkuDimensionVariant variant;
+    private readonly CpiSkuDimensionVariant variant;
 
     public VariantStateBase CurrentState { get; private set; }
 
@@ -23,9 +23,8 @@ public class VariantStateManager
         // Logic to determine if transition is allowed.
         // Example: Prevent transition to TippedState if conditions are not met.
         if (typeof(T) == typeof(TippedVariantState) && !variant.IsTippable)
-        {
             return false;
-        }
+        
         return true;
     }
 }

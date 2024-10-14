@@ -30,32 +30,33 @@ Console.ForegroundColor = ConsoleColor.Green;
 var heightSpecification = new ValidHeightSpecification();
 var heightResult = heightSpecification.IsSatisfiedBy(variant);
 
-logger.LogInformation($"Height specification satisfied: {heightResult.IsSatisfied} {heightResult.Message}");
+logger.LogInformation("Height specification satisfied: {IsSatisfied} {Message}", heightResult.IsSatisfied, heightResult.Message);
 
 var widthSpecification = new ValidWidthSpecification();
 var widthResult = widthSpecification.IsSatisfiedBy(variant);
 
-logger.LogInformation($"Width specification satisfied: {widthResult.IsSatisfied} {widthResult.Message}");
+logger.LogInformation("Width specification satisfied: {IsSatisfied} {Message}", widthResult.IsSatisfied, widthResult.Message);
 
 var lengthSpecification = new ValidLengthSpecification();
 var lengthResult = lengthSpecification.IsSatisfiedBy(variant);
 
-logger.LogInformation($"Length specification satisfied: {lengthResult.IsSatisfied}  {lengthResult.Message}");
+logger.LogInformation("Length specification satisfied: {IsSatisfied} {Message}", lengthResult.IsSatisfied, lengthResult.Message);
 
 var weightSpecification = new ValidWeightSpecification();
 var weightResult = weightSpecification.IsSatisfiedBy(variant);
-logger.LogInformation($"Weight specification satisfied: { weightResult.IsSatisfied} {weightResult.Message}");
+
+logger.LogInformation("Weight specification satisfied: {IsSatisfied} {Message}", weightResult.IsSatisfied, widthResult.Message);
 
 var aspectRatioSpecification = new ValidAspectRatioSpecification();
 var aspectRatioResult = aspectRatioSpecification.IsSatisfiedBy(variant);
 
-logger.LogInformation($"Aspect Ratio specification satisfied: {aspectRatioResult.IsSatisfied} {aspectRatioResult.Message}");
+logger.LogInformation("Aspect Ratio specification satisfied: {IsSatisfied} {Message}", aspectRatioResult.IsSatisfied, aspectRatioResult.Message);
 
 var diagonalRatioSpecification = new ValidDiagonalRatioSpecification();
 var diagonalRatioResult = diagonalRatioSpecification.IsSatisfiedBy(variant);
 
-logger.LogInformation($"Diagonal Ratio specification satisfied: {diagonalRatioResult.IsSatisfied} {diagonalRatioResult}");
-logger.LogInformation($"Variant dimensions: {variant.AspectRatio} Aspect Ratio, {variant.DiagonalRatio} Diagonal Ratio");
+logger.LogInformation("Diagonal Ratio specification satisfied: {IsSatisfied} {Result}", diagonalRatioResult.IsSatisfied, diagonalRatioResult);
+logger.LogInformation("Variant dimensions: {AspectRatio} Aspect Ratio, {DiagonalRatio} Diagonal Ratio", variant.AspectRatio, variant.DiagonalRatio);
 
 // Reset color
 Console.ResetColor();
@@ -68,7 +69,8 @@ var specifications = Assembly.GetExecutingAssembly().GetTypes()
     .ToArray();
 
 var tippingSpecification = Specification<CpiSkuDimensionVariant>.GetFirstSatisfiedBy(variant, specifications);
-logger.LogInformation($"Tipping specification satisfied: {tippingSpecification?.Name ?? "None"}");
+logger.LogInformation("Tipping specification satisfied: {TippingSpecificationName}", 
+    tippingSpecification?.Name ?? "None");
 
 var dimensionsService = serviceProvider.GetRequiredService<TippedDimensionsService>();
 
@@ -88,12 +90,12 @@ else
 if (tippingSpecification != null)
 {
     Console.ForegroundColor = ConsoleColor.Green;
-    logger.LogInformation($"Tipping Specification satisfied: {tippingSpecification.Name}");
+    logger.LogInformation("Tipping Specification satisfied: {TippingSpecificationName}", tippingSpecification.Name);
 }
 else
 {
     Console.ForegroundColor = ConsoleColor.Red;
-    logger.LogInformation("No tipping specification satisfied.");
+    logger.LogInformation("No tipping specification satisfied");
 }
 
 

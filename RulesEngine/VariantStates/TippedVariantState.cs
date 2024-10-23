@@ -9,7 +9,7 @@ public class TippedVariantState : VariantStateBase
         ShowTipping = true;
         ShowUnTip = true;
         ShowExcluded = false;
-        TippingState = TippingState.Yes;
+        TippingState = TippingState.Tipped;
         TippingRecommendation = TippingRecommendation.Recommended;
         
         ChildVariants = GetChildVariants(variant);

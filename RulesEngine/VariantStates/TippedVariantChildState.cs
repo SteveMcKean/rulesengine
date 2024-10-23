@@ -8,7 +8,7 @@ public class TippedVariantChildState : VariantStateBase
         CanEdit = false;
         ShowUnTip = true;
         ShowExcluded = false;
-        TippingState = TippingState.Yes;
+        TippingState = TippingState.Tipped;
         TippingRecommendation = TippingRecommendation.NotAllowed;
         ChildVariants?.Clear();
     }

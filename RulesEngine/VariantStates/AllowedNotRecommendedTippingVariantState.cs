@@ -9,7 +9,7 @@ public class AllowedNotRecommendedTippingVariantState : VariantStateBase
         ShowTipping = true;
         ShowUnTip = false;
         ShowExcluded = false;
-        TippingState = TippingState.Unknown;
+        TippingState = TippingState.Undefined;
         TippingRecommendation = TippingRecommendation.AllowedNotRecommended;
         ChildVariants?.Clear();
     }

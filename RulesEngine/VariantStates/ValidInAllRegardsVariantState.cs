@@ -9,7 +9,7 @@ public class ValidInAllRegardsVariantState : VariantStateBase
         ShowTipping = false;
         ShowUnTip = false;
         ShowExcluded = false;
-        TippingState = TippingState.Unknown;
+        TippingState = TippingState.Undefined;
         TippingRecommendation = TippingRecommendation.NotAllowed;
         ChildVariants?.Clear();
     }

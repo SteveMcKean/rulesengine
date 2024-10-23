@@ -9,7 +9,7 @@ public class ExcludedVariantTippingState : VariantStateBase
         ShowTipping = false;
         ShowUnTip = false;
         ShowExcluded = true;
-        TippingState = TippingState.Excluded;
+        TippingState = TippingState.UnTippable;
         TippingRecommendation = TippingRecommendation.NotAllowed;
         ChildVariants?.Clear();
     }

@@ -2,9 +2,9 @@
 
 public enum TippingState
 {
-    Unknown,
-    Yes,
-    No,
-    Excluded,
+    Undefined,
+    Tipped,
+    Overridden,
+    UnTippable,
     Forced
 }

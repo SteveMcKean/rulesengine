@@ -6,6 +6,7 @@ public class NotAllowedTippingSpecification : Specification<CpiSkuDimensionVaria
 {
     public override Expression<Func<CpiSkuDimensionVariant, bool>> ToExpression()
     {
-        return variant => variant.AspectRatio <= CpiSkuDimensionVariant.MinAspectRatio;
+        // is the ration < 1.0
+        return variant => variant.AspectRatio < CpiSkuDimensionVariant.MinAspectRatio;
     }
 }

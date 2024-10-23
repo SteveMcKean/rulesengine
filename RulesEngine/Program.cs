@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RulesEngine;
+using RulesEngine.Builder;
 using RulesEngine.VariantStates;
 using Serilog;
 
@@ -15,7 +16,7 @@ ConfigureServices(services);
 var serviceProvider = services.BuildServiceProvider();
 var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 
-logger.LogInformation("Tipping tester application started");
+logger.LogInformation("***Tipping tester application started***");
 
 Console.ForegroundColor = ConsoleColor.Red;
 var variant = new CpiSkuDimensionVariant
@@ -27,6 +28,21 @@ var variant = new CpiSkuDimensionVariant
     };
 
 Console.ForegroundColor = ConsoleColor.Green;
+
+var child = new CpiSkuDimensionVariant();
+child.ParentId = variant.Id;
+child.TippingState = TippingState.Undefined;
+
+variant.ChildVariants.Add(child);
+
+var item = VariantBuilder.Create(variant)
+    .WithTippingState(TippingState.Tipped, true)
+    .Build();
+
+
+logger.LogInformation("Variant dimensions: {Length}L x {Width}W x {Height}H x {Weight}W", 
+    variant.Length, variant.Width, variant.Height, variant.Weight);
+
 var heightSpecification = new ValidHeightSpecification();
 var heightResult = heightSpecification.IsSatisfiedBy(variant);
 
@@ -63,21 +79,22 @@ Console.ResetColor();
 
 // Retrieve and apply the first satisfied tipping specification
 var specificationType = typeof(Specification<CpiSkuDimensionVariant>);
+
 var specifications = Assembly.GetExecutingAssembly().GetTypes()
     .Where(t => t.BaseType == specificationType && t.Name.Contains("TippingSpecification"))
     .Select(t => Activator.CreateInstance(t) as Specification<CpiSkuDimensionVariant>)
     .ToArray();
 
 var tippingSpecification = Specification<CpiSkuDimensionVariant>.GetFirstSatisfiedBy(variant, specifications);
-logger.LogInformation("Tipping specification satisfied: {TippingSpecificationName}", 
-    tippingSpecification?.Name ?? "None");
+
+logger.LogInformation("Tipping specification satisfied: {TippingSpecificationName}", tippingSpecification?.Name ?? "None");
 
 var dimensionsService = serviceProvider.GetRequiredService<TippedDimensionsService>();
 
 var childVariants = dimensionsService.GetValidTippedDimVars(variant);
 if (!childVariants.Any())
 {
-    logger.LogInformation("Cannot tip variant.");
+    logger.LogInformation("Cannot tip variant");
 }
 else
 {
@@ -145,6 +162,7 @@ static void ConfigureServices(IServiceCollection services)
     services.AddSingleton<TippedDimensionsService>();
 }
 
+logger.LogInformation("***Tipping tester application ended***");
 Console.ReadLine();
     
     

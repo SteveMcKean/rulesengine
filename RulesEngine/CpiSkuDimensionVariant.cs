@@ -27,6 +27,7 @@ public class CpiSkuDimensionVariant
     public const decimal MinAspectRatio = 1.0m;
     
     public bool IsSymboticEligible { get; set; }
+    public TippingState TippingState { get; set; }
     
     public int Weight { get; set; }
     
@@ -44,6 +45,13 @@ public class CpiSkuDimensionVariant
     public bool IsTippable { get; set; }
     public bool IsDimensionsOutOfBounds { get; set; }
     public string DimensionOutOfBoundsReason { get; set; }
+    public bool ShowTipIcon { get; set; }
+    public bool ShowUnTipIcon { get; set; }
+    public bool ShowUnTippableIcon { get; set; }
+    public bool CanEdit { get; set; }
+    public bool CanEditSymboticEligible { get; set; }
+    public Guid? ParentId { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public CpiSkuDimensionVariant()
     {

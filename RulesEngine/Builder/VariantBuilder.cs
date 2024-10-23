@@ -10,9 +10,9 @@ public class VariantBuilder
     private readonly Dictionary<TippingState, Action> tippingStateConfigurations;
 
     // Private constructor to restrict direct instantiation
-    private VariantBuilder(CpiSkuDimensionVariant existingVariant = null)
+    private VariantBuilder(CpiSkuDimensionVariant existingVariant)
     {
-        variant = existingVariant ?? new CpiSkuDimensionVariant();
+        variant = existingVariant;
 
         // Initialize the dictionary with actions for each TippingState
         tippingStateConfigurations = new Dictionary<TippingState, Action>
@@ -26,7 +26,7 @@ public class VariantBuilder
     }
 
     // Static factory method to create a new builder
-    public static VariantBuilder Create(CpiSkuDimensionVariant existingVariant = null)
+    public static VariantBuilder Create(CpiSkuDimensionVariant existingVariant)
     {
         return new VariantBuilder(existingVariant);
     }
@@ -40,7 +40,7 @@ public class VariantBuilder
             variant.TippingState = state;
 
             // Optionally apply the same state to all children
-            if (applyToChildren && (bool)variant.ChildVariants?.Any())
+            if (applyToChildren && variant.ChildVariants.Any())
             {
                 foreach (var child in variant.ChildVariants) 
                     new VariantBuilder(child).WithTippingState(child.TippingState);
@@ -60,6 +60,7 @@ public class VariantBuilder
             {
                 v.IsTippable = false;
                 v.IsSymboticEligible = true;
+                v.CanEditSymboticEligible = true;
                 v.ShowTipIcon = false;
                 v.ShowUnTipIcon = false;
                 v.ShowUnTippableIcon = false;
@@ -104,6 +105,12 @@ public class VariantBuilder
         {
             v.IsTippable = false;
             v.IsSymboticEligible = false;
+            v.CanEditSymboticEligible = false;
+            v.ShowTipIcon = false;
+            v.ShowUnTipIcon = true;
+            v.ShowUnTippableIcon = false;
+            v.CanEdit = false;
+            
             // Additional logic for tipped state can be added here
         });
     }
@@ -114,7 +121,12 @@ public class VariantBuilder
         {
             v.IsTippable = false;
             v.IsSymboticEligible = false;
-            // Additional logic for forced state can be added here
+            v.CanEditSymboticEligible = false;
+            v.ShowTipIcon = false;
+            v.ShowUnTipIcon = false;    
+            v.ShowUnTippableIcon = true;
+            v.CanEdit = false;
+            
         });
     }
 
@@ -124,7 +136,12 @@ public class VariantBuilder
         {
             v.IsTippable = true;
             v.IsSymboticEligible = true;
-            // Example logic for Allowed/Overridden state
+            v.CanEditSymboticEligible = true;
+            v.ShowTipIcon = true;
+            v.ShowUnTipIcon = false;
+            v.ShowUnTippableIcon = false;
+            v.CanEdit = true;
+            
         });
     }
 

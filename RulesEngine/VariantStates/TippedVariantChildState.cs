@@ -28,7 +28,7 @@ public class ForcedVariantChildState : VariantStateBase
         ChildVariants = GetChildVariants(variant);
     }
 
-    private List<CpiSkuDimensionVariant> GetChildVariants(CpiSkuDimensionVariant variant)
+    private static List<CpiSkuDimensionVariant> GetChildVariants(CpiSkuDimensionVariant variant)
     {  
         throw new NotImplementedException();
     }

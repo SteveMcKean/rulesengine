@@ -27,16 +27,19 @@ var variant = new CpiSkuDimensionVariant
         Weight = GetDoubleFromUser("Enter Weight: ")
     };
 
+variant.TippingState = TippingState.Forced;
 Console.ForegroundColor = ConsoleColor.Green;
 
-var child = new CpiSkuDimensionVariant();
-child.ParentId = variant.Id;
-child.TippingState = TippingState.Undefined;
+var child = new CpiSkuDimensionVariant
+    {
+        ParentId = variant.Id,
+        TippingState = TippingState.Undefined
+    };
 
 variant.ChildVariants.Add(child);
 
 var item = VariantBuilder.Create(variant)
-    .WithTippingState(TippingState.Tipped, true)
+    .WithTippingState(variant.TippingState, true)
     .Build();
 
 
